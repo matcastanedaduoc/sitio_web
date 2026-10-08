@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito de Compras - PixelCraft</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">PixelCraft</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+      <div class="user-actions">
+        <a href="login.html">Iniciar Sesión</a>
+        <a href="registro.html">Registrarse</a>
+        <a href="carrito.html" class="btn-cart">Carrito (<span id="cart-count">0</span>)</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1>Tu Carrito de Compras</h1>
+    
+    <div id="carrito-contenedor" style="margin-top: 2rem;">
+      <table class="form-container" style="width: 100%; max-width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+          <tr style="border-bottom: 2px solid var(--border-color); color: var(--accent-color);">
+            <th style="padding: 1rem;">Producto</th>
+            <th style="padding: 1rem;">Precio</th>
+            <th style="padding: 1rem;">Cantidad</th>
+            <th style="padding: 1rem;">Subtotal</th>
+            <th style="padding: 1rem;">Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-carrito-body">
+          <!-- Se llena dinámicamente -->
+        </tbody>
+      </table>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; background: var(--bg-card); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+        <h2>Total a Pagar: <span id="cart-total" style="color: var(--accent-color);">$0</span></h2>
+        <div>
+          <button class="btn-primary" onclick="vaciarCarrito()" style="background-color: var(--danger-color); color: #fff; margin-right: 0.5rem;">Vaciar Carrito</button>
+          <button class="btn-primary" onclick="procesarPago()">Proceder al Pago</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 PixelCraft Gaming</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/carrito.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderizarTablaCarrito();
+    });
+
+    // Función para dibujar los productos en la tabla del carrito
+    function renderizarTablaCarrito() {
+      const tbody = document.getElementById('tabla-carrito-body');
+      const totalElemento = document.getElementById('cart-total');
+      const carrito = obtenerCarrito();
+
+      if (!tbody) return;
+
+      if (carrito.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+              El carrito está vacío. <a href="productos.html" style="color: var(--accent-color);">Ir al catálogo</a>
+            </td>
+          </tr>`;
+        if (totalElemento) totalElemento.textContent = "$0";
+        return;
+      }
+
+      let total = 0;
+      tbody.innerHTML = carrito.map(item => {
+        const subtotal = item.precio * item.cantidad;
+        total += subtotal;
+        return `
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 1rem; display: flex; align-items: center; gap: 1rem;">
+              <img src="${item.imagen}" alt="${item.nombre}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+              <span>${item.nombre}</span>
+            </td>
+            <td style="padding: 1rem;">$${item.precio.toLocaleString('es-CL')}</td>
+            <td style="padding: 1rem;">${item.cantidad}</td>
+            <td style="padding: 1rem; color: var(--accent-color); font-weight: bold;">$${subtotal.toLocaleString('es-CL')}</td>
+            <td style="padding: 1rem;">
+              <button onclick="eliminarDelCarrito(${item.id})" style="background: none; border: none; color: var(--danger-color); cursor: pointer; font-weight: bold;">Eliminar</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      if (totalElemento) {
+        totalElemento.textContent = `$${total.toLocaleString('es-CL')}`;
+      }
+    }
+
+    function procesarPago() {
+      const carrito = obtenerCarrito();
+      if (carrito.length === 0) {
+        alert("Tu carrito está vacío.");
+        return;
+      }
+      alert("¡Gracias por tu compra! Procesando pedido...");
+      vaciarCarrito();
+    }
+  </script>
+</body>
+</html>

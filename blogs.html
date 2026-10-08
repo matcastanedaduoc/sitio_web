@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Blogs - PixelCraft</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">PixelCraft</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+      <div class="user-actions">
+        <a href="login.html">Iniciar Sesión</a>
+        <a href="registro.html">Registrarse</a>
+        <a href="carrito.html" class="btn-cart">Carrito (<span id="cart-count">0</span>)</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1>Noticias y Blogs Gamer</h1>
+    <div style="display: grid; gap: 2rem; margin-top: 2rem;">
+      <article class="form-container" style="max-width: 100%; margin: 0;">
+        <h2>Top 5 Periféricos Gamer del 2026</h2>
+        <p style="color: var(--text-muted); margin: 0.5rem 0 1rem 0;">Descubre los mejores teclados y mouses para mejorar tu nivel competitivo.</p>
+        <a href="blog-detalle-1.html" class="btn-primary">Leer Noticia</a>
+      </article>
+
+      <article class="form-container" style="max-width: 100%; margin: 0;">
+        <h2>Guía para armar tu primera PC Gamer</h2>
+        <p style="color: var(--text-muted); margin: 0.5rem 0 1rem 0;">Aprende paso a paso cómo elegir componentes compatibles sin gastar de más.</p>
+        <a href="blog-detalle-2.html" class="btn-primary">Leer Noticia</a>
+      </article>
+    </div>
+  </main>
+
+  <footer><p>&copy; 2026 PixelCraft Gaming</p></footer>
+  <script src="js/data.js"></script>
+  <script src="js/carrito.js"></script>
+</body>
+</html>

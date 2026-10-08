@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuevo Usuario - Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <h2 class="logo">Admin Panel</h2>
+      <ul style="list-style: none; margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="productos.html">Mantenedor Productos</a></li>
+        <li><a href="usuarios.html" style="color: var(--accent-color);">Mantenedor Usuarios</a></li>
+        <li><a href="../index.html" style="color: var(--danger-color);">Salir a la Tienda</a></li>
+      </ul>
+    </aside>
+
+    <main class="admin-content">
+      <h1>Crear Nuevo Usuario</h1>
+      <div class="form-container" style="margin: 2rem 0; max-width: 600px;">
+        <form id="form-nuevo-user">
+          <div class="form-group">
+            <label for="u-nombre">Nombre Completo</label>
+            <input type="text" id="u-nombre" placeholder="Carlos Tapia" required>
+          </div>
+          <div class="form-group">
+            <label for="u-run">RUN (Sin puntos ni guión)</label>
+            <input type="text" id="u-run" placeholder="18987654K" required>
+          </div>
+          <div class="form-group">
+            <label for="u-correo">Correo Electrónico</label>
+            <input type="email" id="u-correo" placeholder="carlos@duoc.cl" required>
+          </div>
+          <div class="form-group">
+            <label for="u-rol">Rol de Usuario</label>
+            <select id="u-rol" required style="width: 100%; padding: 0.8rem; background: var(--bg-secondary); color: #fff; border: 1px solid var(--border-color); border-radius: 5px;">
+              <option value="Cliente">Cliente</option>
+              <option value="Administrador">Administrador</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn-primary">Guardar Usuario</button>
+            <a href="usuarios.html" class="btn-primary" style="background-color: var(--border-color); color: #fff;">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/validaciones.js"></script>
+  <script>
+    document.getElementById('form-nuevo-user').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById('u-nombre').value;
+      const run = document.getElementById('u-run').value;
+      const correo = document.getElementById('u-correo').value;
+      const rol = document.getElementById('u-rol').value;
+
+      if (!validarRun(run)) {
+        alert("El RUN ingresado no es válido.");
+        return;
+      }
+
+      if (!validarCorreo(correo)) {
+        alert("El correo debe ser @duoc.cl, @profesor.duoc.cl o @gmail.com.");
+        return;
+      }
+
+      const users = obtenerUsuariosDB();
+      const nuevoUsuario = {
+        id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+        nombre,
+        run,
+        correo,
+        rol
+      };
+
+      users.push(nuevoUsuario);
+      localStorage.setItem('pixelcraft_usuarios', JSON.stringify(users));
+
+      alert("¡Usuario registrado exitosamente!");
+      window.location.href = "usuarios.html";
+    });
+  </script>
+</body>
+</html>

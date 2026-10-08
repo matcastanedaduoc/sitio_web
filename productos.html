@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Productos - PixelCraft</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">PixelCraft</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+      <div class="user-actions">
+        <a href="login.html">Iniciar Sesión</a>
+        <a href="registro.html">Registrarse</a>
+        <a href="carrito.html" class="btn-cart">Carrito (<span id="cart-count">0</span>)</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1>Catálogo de Productos</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Explora nuestros periféricos y componentes de alta gama.</p>
+    
+    <div id="catalogo-grid" class="product-grid">
+      <!-- Se puebla dinámicamente desde localStorage -->
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 PixelCraft Gaming</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/carrito.js"></script>
+  <script>
+    function renderCatalogo() {
+      const grid = document.getElementById('catalogo-grid');
+      const productos = obtenerProductosDB();
+
+      if (grid) {
+        if (productos.length === 0) {
+          grid.innerHTML = '<p>No hay productos disponibles por el momento.</p>';
+          return;
+        }
+
+        grid.innerHTML = productos.map(p => `
+          <div class="product-card">
+            <img src="${p.imagen}" alt="${p.nombre}">
+            <h3>${p.nombre}</h3>
+            <p class="price">$${p.precio.toLocaleString('es-CL')}</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">${p.descripcion}</p>
+            <div style="display: flex; gap: 0.5rem;">
+              <a href="detalle-producto.html?id=${p.id}" class="btn-primary" style="background-color: var(--border-color); color: #fff;">Detalle</a>
+              <button class="btn-primary" onclick="agregarAlCarrito(${p.id})">Añadir</button>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderCatalogo);
+
+    // Sincronización en vivo cuando el Admin agrega/elimina productos en otra pestaña
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'pixelcraft_productos') {
+        renderCatalogo();
+      }
+    });
+  </script>
+</body>
+</html>

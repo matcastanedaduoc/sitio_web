@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Producto - PixelCraft</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">PixelCraft</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+      <div class="user-actions">
+        <a href="login.html">Iniciar Sesión</a>
+        <a href="registro.html">Registrarse</a>
+        <a href="carrito.html" class="btn-cart">Carrito (<span id="cart-count">0</span>)</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2rem; background: var(--bg-card); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+      <div style="flex: 1; min-width: 280px;">
+        <img id="det-img" src="https://via.placeholder.com/400x300?text=Cargando" alt="Producto" style="width: 100%; border-radius: 8px;">
+      </div>
+      <div style="flex: 1; min-width: 280px;">
+        <h1 id="det-nombre">Nombre Producto</h1>
+        <p id="det-codigo" style="color: var(--text-muted); margin-top: 0.5rem;">CÓDIGO: -</p>
+        <p id="det-precio" class="price" style="font-size: 2rem; margin: 1rem 0;">$0</p>
+        <p id="det-desc" style="line-height: 1.6; margin-bottom: 1.5rem;">Cargando descripción...</p>
+        
+        <div class="form-group" style="max-width: 150px;">
+          <label for="cant">Cantidad:</label>
+          <input type="number" id="cant" value="1" min="1" max="10">
+        </div>
+
+        <button id="btn-add-det" class="btn-primary" style="margin-top: 1rem;">Añadir al Carrito</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 PixelCraft Gaming</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/carrito.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get('id')) || 1;
+      const p = productosData.find(prod => prod.id === id) || productosData[0];
+
+      if (p) {
+        document.getElementById('det-img').src = p.imagen;
+        document.getElementById('det-nombre').textContent = p.nombre;
+        document.getElementById('det-codigo').textContent = `CÓDIGO: ${p.codigo}`;
+        document.getElementById('det-precio').textContent = `$${p.precio.toLocaleString('es-CL')}`;
+        document.getElementById('det-desc').textContent = p.descripcion;
+
+        document.getElementById('btn-add-det').addEventListener('click', () => {
+          const cant = parseInt(document.getElementById('cant').value) || 1;
+          agregarAlCarrito(p.id, cant);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

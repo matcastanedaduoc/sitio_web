@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - PixelCraft</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">PixelCraft</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+      <div class="user-actions">
+        <a href="login.html">Iniciar Sesión</a>
+        <a href="registro.html">Registrarse</a>
+        <a href="carrito.html" class="btn-cart">Carrito (<span id="cart-count">0</span>)</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="form-container">
+      <h2>Formulario de Contacto</h2>
+      <form id="form-contacto">
+        <div class="form-group">
+          <label for="c-nombre">Nombre Completo</label>
+          <input type="text" id="c-nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="c-correo">Correo Electrónico</label>
+          <input type="email" id="c-correo" placeholder="usuario@duoc.cl" required>
+        </div>
+        <div class="form-group">
+          <label for="c-mensaje">Mensaje</label>
+          <textarea id="c-mensaje" rows="4" style="width: 100%; background: var(--bg-secondary); color: #fff; border: 1px solid var(--border-color); border-radius: 5px; padding: 0.8rem;" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%;">Enviar Mensaje</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 PixelCraft Gaming</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/validaciones.js"></script>
+  <script src="js/carrito.js"></script>
+  <script>
+    document.getElementById('form-contacto').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById('c-nombre').value;
+      const correo = document.getElementById('c-correo').value;
+      const mensaje = document.getElementById('c-mensaje').value;
+
+      const errores = validarFormularioContacto(nombre, correo, mensaje);
+
+      if (errores.length > 0) {
+        alert("Errores en el formulario de contacto:\n- " + errores.join("\n- "));
+      } else {
+        alert("¡Mensaje enviado con éxito! Nos pondremos en contacto contigo a la brevedad.");
+        document.getElementById('form-contacto').reset();
+      }
+    });
+  </script>
+</body>
+</html>

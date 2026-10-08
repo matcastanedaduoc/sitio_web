@@ -1,0 +1,35 @@
+/* Estilos para el Panel de Control */
+.admin-sidebar {
+  width: 220px;
+  background-color: var(--bg-secondary);
+  min-height: 100vh;
+  padding: 1.5rem;
+  border-right: 1px solid var(--border-color);
+}
+
+.admin-layout {
+  display: flex;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.table-admin {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  background-color: var(--bg-card);
+}
+
+.table-admin th, .table-admin td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table-admin th {
+  background-color: var(--bg-secondary);
+  color: var(--accent-color);
+}

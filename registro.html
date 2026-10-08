@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - PixelCraft</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">PixelCraft</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+      <div class="user-actions">
+        <a href="login.html">Iniciar Sesión</a>
+        <a href="registro.html">Registrarse</a>
+        <a href="carrito.html" class="btn-cart">Carrito (<span id="cart-count">0</span>)</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="form-container">
+      <h2>Crear Cuenta</h2>
+      <form id="form-registro">
+        <div class="form-group">
+          <label for="reg-nombre">Nombre Completo</label>
+          <input type="text" id="reg-nombre" required>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-run">RUN (Sin puntos ni guión)</label>
+          <input type="text" id="reg-run" placeholder="12345678K" required>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-correo">Correo Electrónico</label>
+          <input type="email" id="reg-correo" placeholder="usuario@duoc.cl" required>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-region">Región</label>
+          <select id="reg-region" required>
+            <option value="">Seleccione Región</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-comuna">Comuna</label>
+          <select id="reg-comuna" required disabled>
+            <option value="">Seleccione Comuna</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-pass">Contraseña (4 - 10 caracteres)</label>
+          <input type="password" id="reg-pass" minlength="4" maxlength="10" required>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-pass-confirm">Confirmar Contraseña</label>
+          <input type="password" id="reg-pass-confirm" minlength="4" maxlength="10" required>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%;">Registrarse</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 PixelCraft Gaming</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/validaciones.js"></script>
+  <script src="js/carrito.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const selectRegion = document.getElementById('reg-region');
+      const selectComuna = document.getElementById('reg-comuna');
+
+      // Cargar Regiones dinámicamente desde data.js
+      if (typeof regionesData !== 'undefined' && selectRegion) {
+        regionesData.forEach(reg => {
+          const option = document.createElement('option');
+          option.value = reg.region;
+          option.textContent = reg.region;
+          selectRegion.appendChild(option);
+        });
+      }
+
+      // Actualizar Comunas cuando cambia la Región
+      selectRegion.addEventListener('change', (e) => {
+        const regionSel = e.target.value;
+        selectComuna.innerHTML = '<option value="">Seleccione Comuna</option>';
+        
+        if (regionSel) {
+          const regObj = regionesData.find(r => r.region === regionSel);
+          if (regObj) {
+            regObj.comunas.forEach(comuna => {
+              const option = document.createElement('option');
+              option.value = comuna;
+              option.textContent = comuna;
+              selectComuna.appendChild(option);
+            });
+            selectComuna.disabled = false;
+          }
+        } else {
+          selectComuna.disabled = true;
+        }
+      });
+
+      // Validar envío del formulario
+      document.getElementById('form-registro').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const datos = {
+          nombre: document.getElementById('reg-nombre').value,
+          run: document.getElementById('reg-run').value,
+          correo: document.getElementById('reg-correo').value,
+          region: document.getElementById('reg-region').value,
+          comuna: document.getElementById('reg-comuna').value,
+          password: document.getElementById('reg-pass').value,
+          confirmarPassword: document.getElementById('reg-pass-confirm').value
+        };
+
+        const errores = validarFormularioRegistro(datos);
+
+        if (errores.length > 0) {
+          alert("Errores en el registro:\n- " + errores.join("\n- "));
+        } else {
+          alert("¡Registro exitoso! Ya puedes iniciar sesión.");
+          window.location.href = "login.html";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
